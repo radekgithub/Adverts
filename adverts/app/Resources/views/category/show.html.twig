@@ -1,16 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    {% if is_granted("ROLE_USER") %}
+        <div><a href="{{ path('fos_user_security_logout') }}">Logout</a></div>
+        Hi {{ app.user.username }}
+    {% endif %}
+
     <h1>Category</h1>
 
     <table>
         <tbody>
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<td>{{ category.id }}</td>#}
+            {#</tr>#}
             <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
+                <th>Category</th>
                 <td>{{ category.name }}</td>
             </tr>
         </tbody>
@@ -18,8 +24,9 @@
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+            <a href="{{ path('category_index') }}">Back to the category list</a>
         </li>
+    {% if is_granted('ROLE_ADMIN') %}
         <li>
             <a href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
         </li>
@@ -28,5 +35,6 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
+    {% endif %}
     </ul>
 {% endblock %}

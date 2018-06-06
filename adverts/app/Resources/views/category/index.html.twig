@@ -4,36 +4,40 @@
     <h1>Categories list</h1>
 
     <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        {#<thead>#}
+            {#<tr>#}
+                {#<th>Id</th>#}
+                {#<th>Name</th>#}
+                {#<th>Actions</th>#}
+            {#</tr>#}
+        {#</thead>#}
         <tbody>
         {% for category in categories %}
             <tr>
-                <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
-                <td>{{ category.name }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('category_show', { 'id': category.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
+                {#<td>{{ category.id }}</td>#}
+                <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.name }}</a></td>
+                {#<td>#}
+                    {#<ul>#}
+                        {#<li>#}
+                            {#<a href="{{ path('category_show', { 'id': category.id }) }}">show</a>#}
+                        {#</li>#}
+                        {#{% if is_granted('ROLE_ADMIN') %}#}
+                        {#<li>#}
+                            {#<a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>#}
+                        {#</li>#}
+                        {#{% endif %}#}
+                    {#</ul>#}
+                {#</td>#}
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     <ul>
+        {% if is_granted('ROLE_ADMIN') %}
         <li>
             <a href="{{ path('category_new') }}">Create a new category</a>
         </li>
+        {% endif %}
     </ul>
 {% endblock %}

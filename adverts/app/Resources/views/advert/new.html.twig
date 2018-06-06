@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    <div><a href="{{ path('advert_index') }}">Show All Ads</a></div>
+    <div><a href="{{ path('advert_my_ads') }}">My Ads</a></div>
+
     <h1>Advert creation</h1>
 
     {{ form_start(form) }}
@@ -14,3 +18,9 @@
         </li>
     </ul>
 {% endblock %}
+
+        {#{{ form_widget(form.title) }}#}
+        {#{{ form_widget(form.description) }}#}
+        {#{{ form_widget(form.photo) }}#}
+        {#{{ form_widget(form.expiryDate) }}#}
+        {#{{ form_widget(form.category) }}#}

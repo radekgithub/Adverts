@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+    <div><a href="{{ path('advert_index') }}">Show All Ads</a></div>
+    <div><a href="{{ path('advert_my_ads') }}">My Ads</a></div>
+
     <h1>Advert</h1>
 
     <table>
@@ -19,7 +23,7 @@
             </tr>
             <tr>
                 <th>Photo</th>
-                <td>{{ advert.photo }}</td>
+                <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
             </tr>
             <tr>
                 <th>Photooldname</th>
@@ -27,7 +31,7 @@
             </tr>
             <tr>
                 <th>Expirydate</th>
-                <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
             </tr>
         </tbody>
     </table>
@@ -36,6 +40,7 @@
         <li>
             <a href="{{ path('advert_index') }}">Back to the list</a>
         </li>
+        {% if app.user.id == advert.user.id %}
         <li>
             <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
         </li>
@@ -44,5 +49,6 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
+        {% endif %}
     </ul>
 {% endblock %}

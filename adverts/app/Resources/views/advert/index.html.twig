@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Adverts list</h1>
 
+    <div><a href="{{ path('advert_my_ads') }}">My Ads</a></div>
+
+    <h1>Adverts list</h1>
     <table>
         <thead>
             <tr>
@@ -10,7 +12,6 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Photo</th>
-                <th>Photooldname</th>
                 <th>Expirydate</th>
                 <th>Actions</th>
             </tr>
@@ -21,17 +22,18 @@
                 <td><a href="{{ path('advert_show', { 'id': advert.id }) }}">{{ advert.id }}</a></td>
                 <td>{{ advert.title }}</td>
                 <td>{{ advert.description }}</td>
-                <td>{{ advert.photo }}</td>
-                <td>{{ advert.photoOldName }}</td>
-                <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
+                <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>
                             <a href="{{ path('advert_show', { 'id': advert.id }) }}">show</a>
                         </li>
+                        {% if app.user.id == advert.user.id %}
                         <li>
-                            <a href="{{ path('advert_edit', { 'id': advert.id }) }}">edit</a>
+                            <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </td>
             </tr>

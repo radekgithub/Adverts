@@ -5,6 +5,9 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class AdvertType extends AbstractType
 {
@@ -13,8 +16,21 @@ class AdvertType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('description')->add('photo')->add('photoOldName')->add('expiryDate')->add('user')->add('category');
-    }/**
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('photo', FileType::class, array(
+                'label' => 'Choose photo file',
+                'data_class' => null))
+//            ->add('photoOldName')
+            ->add('expiryDate', DateType::class, array(
+                // renders it as a single text box
+                'widget' => 'single_text'))
+//            ->add('user', HiddenType::class, array('data' => $options['user']))
+            ->add('category', null, ['choice_label' => 'name']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

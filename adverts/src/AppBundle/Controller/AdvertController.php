@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Advert;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Advert controller.
@@ -32,6 +33,23 @@ class AdvertController extends Controller
     }
 
     /**
+     * Lists all advert entities.
+     *
+     * @Route("/myads", name="advert_my_ads")
+     * @Method("GET")
+     */
+    public function myAdsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $adverts = $em->getRepository('AppBundle:Advert')->findAll();
+
+        return $this->render('advert/my_ads.html.twig', array(
+            'adverts' => $adverts,
+        ));
+    }
+
+    /**
      * Creates a new advert entity.
      *
      * @Route("/new", name="advert_new")
@@ -40,10 +58,20 @@ class AdvertController extends Controller
     public function newAction(Request $request)
     {
         $advert = new Advert();
+        $advert->setUser($this->getUser());//get logged user id for new advert
         $form = $this->createForm('AppBundle\Form\AdvertType', $advert);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $advert->getPhoto();
+
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+
+            $file->move($this->getParameter('images_directory'), $fileName);
+
+            $advert->setPhoto($fileName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($advert);
             $em->flush();
@@ -55,6 +83,14 @@ class AdvertController extends Controller
             'advert' => $advert,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @return string
+     */
+    private function generateUniqueFileName()
+    {
+        return md5(uniqid());
     }
 
     /**
@@ -86,6 +122,15 @@ class AdvertController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            $file = $advert->getPhoto();
+
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+
+            $file->move($this->getParameter('images_directory'), $fileName);
+
+            $advert->setPhoto($fileName);
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('advert_edit', array('id' => $advert->getId()));
