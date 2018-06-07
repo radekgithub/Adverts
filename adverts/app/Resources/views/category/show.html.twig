@@ -6,19 +6,19 @@
 
     <table>
         <tbody>
-            {% for advert in category.adverts %}
-                {% if date(advert.expiryDate) > date() %}
-            <tr>
-                <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
-            </tr>
-                {% else %}
-                    {% if is_granted("ROLE_ADMIN") or (advert.user.id == app.user.id) %}
-                        <tr>
-                            <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
-                        </tr>
-                    {% endif %}
+        {% for advert in category.adverts %}
+            {% if date(advert.expiryDate) > date() %}
+                <tr>
+                    <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
+                </tr>
+            {% else %}
+                {% if is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and advert.user.id == app.user.id)%}
+                    <tr>
+                        <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
+                    </tr>
                 {% endif %}
-            {% endfor %}
+            {% endif %}
+        {% endfor %}
         </tbody>
     </table>
 
@@ -26,15 +26,15 @@
         <li>
             <a href="{{ path('category_index') }}">Back to Categories</a>
         </li>
-    {% if is_granted('ROLE_ADMIN') %}
-        <li>
-            <a href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    {% endif %}
+                {{ form_end(delete_form) }}
+            </li>
+        {% endif %}
     </ul>
 {% endblock %}

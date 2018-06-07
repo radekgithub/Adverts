@@ -25,11 +25,17 @@ class User extends BaseUser
      */
     private $adverts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="user")
+     */
+    private $comments;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
         $this->adverts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**

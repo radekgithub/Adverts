@@ -33,6 +33,9 @@
         <li>
             <a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a>
         </li>
+        <li>
+            <a href="{{ path('comment_new', {'advert' : advert.id}) }}">Add Comment</a>
+        </li>
         {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
         <li>
@@ -46,4 +49,12 @@
         {% endif %}
         {% endif %}
     </ul>
+
+    <h3>Comments</h3>
+    {% if advert.comments %}
+        {% for comment in advert.comments %}
+            <p>{{ comment.text }}</p>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}
