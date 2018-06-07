@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Comment
@@ -52,6 +53,10 @@ class Comment
      */
     private $user;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get id

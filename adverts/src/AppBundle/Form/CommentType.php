@@ -17,10 +17,10 @@ class CommentType extends AbstractType
     {
         $builder
 //            ->add('userId')
-            ->add('text')
-            ->add('date', DateType::class, array(
+            ->add('text');
+//            ->add('date');
                 // renders it as a single text box
-                'widget' => 'single_text'));
+//                'data' => date('Y:m:d')));
 //            ->add('advert')
 //            ->add('user');
     }/**
