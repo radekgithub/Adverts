@@ -2,29 +2,29 @@
 
 {% block body %}
 
-    {% if is_granted("ROLE_USER") %}
-        <div><a href="{{ path('fos_user_security_logout') }}">Logout</a></div>
-        Hi {{ app.user.username }}
-    {% endif %}
-
-    <h1>Category</h1>
+    <h1>{{ category.name }}</h1>
 
     <table>
         <tbody>
-            {#<tr>#}
-                {#<th>Id</th>#}
-                {#<td>{{ category.id }}</td>#}
-            {#</tr>#}
+            {% for advert in category.adverts %}
+                {% if date(advert.expiryDate) > date() %}
             <tr>
-                <th>Category</th>
-                <td>{{ category.name }}</td>
+                <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
             </tr>
+                {% else %}
+                    {% if is_granted("ROLE_ADMIN") or (advert.user.id == app.user.id) %}
+                        <tr>
+                            <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('category_index') }}">Back to the category list</a>
+            <a href="{{ path('category_index') }}">Back to Categories</a>
         </li>
     {% if is_granted('ROLE_ADMIN') %}
         <li>

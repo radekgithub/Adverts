@@ -2,10 +2,7 @@
 
 {% block body %}
 
-    <div><a href="{{ path('advert_index') }}">Show All Ads</a></div>
-    <div><a href="{{ path('advert_my_ads') }}">My Ads</a></div>
-
-    <h1>Advert creation</h1>
+    <h1>Create New Ad</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -14,13 +11,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('advert_index') }}">Back to the list</a>
+            <a href="{{ path('advert_my_ads') }}">Back to My Ads</a>
         </li>
     </ul>
 {% endblock %}
-
-        {#{{ form_widget(form.title) }}#}
-        {#{{ form_widget(form.description) }}#}
-        {#{{ form_widget(form.photo) }}#}
-        {#{{ form_widget(form.expiryDate) }}#}
-        {#{{ form_widget(form.category) }}#}

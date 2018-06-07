@@ -10,12 +10,33 @@
     </head>
     <body>
 
+    <ul>
     {% if is_granted("ROLE_USER") %}
-        <div><a href="{{ path('fos_user_security_logout') }}">Logout</a></div>
-        Hi {{ app.user.username }}
+        <h3>Hello {{ app.user.username }}</h3>
+        <li>
+            <a href="{{ path('fos_user_security_logout') }}">Logout</a>
+        </li>
+        <li>
+            <a href="{{ path('user_show', {'id': app.user.id}) }}">My Profile</a>
+        </li>
+        <li>
+            <a href="{{ path('advert_my_ads') }}">My Ads</a>
+        </li>
+        <li>
+            <a href="{{ path('advert_new') }}">Create New Ad</a>
+        </li>
     {% else %}
-        <div><a href="{{ path('fos_user_security_login') }}">Login</a></div>
+        <li>
+            <a href="{{ path('fos_user_security_login') }}">Login</a>
+        </li>
+        <li>
+            <a href="{{ path('fos_user_registration_register') }}">Register</a>
+        </li>
     {% endif %}
+        <li>
+            <a href="{{ path('category_index') }}">Categories</a>
+        </li>
+    </ul>
 
     {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}

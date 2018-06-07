@@ -2,9 +2,6 @@
 
 {% block body %}
 
-    <div><a href="{{ path('advert_index') }}">Show All Ads</a></div>
-    <div><a href="{{ path('advert_my_ads') }}">My Ads</a></div>
-
     <h1>Advert</h1>
 
     <table>
@@ -26,10 +23,6 @@
                 <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
             </tr>
             <tr>
-                <th>Photooldname</th>
-                <td>{{ advert.photoOldName }}</td>
-            </tr>
-            <tr>
                 <th>Expirydate</th>
                 <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
             </tr>
@@ -38,8 +31,9 @@
 
     <ul>
         <li>
-            <a href="{{ path('advert_index') }}">Back to the list</a>
+            <a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a>
         </li>
+        {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
         <li>
             <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
@@ -49,6 +43,7 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
+        {% endif %}
         {% endif %}
     </ul>
 {% endblock %}

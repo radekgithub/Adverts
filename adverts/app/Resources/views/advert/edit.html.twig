@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Advert edit</h1>
+    <h1>Edit Advert</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -10,7 +10,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('advert_index') }}">Back to the list</a>
+            <a href="{{ path('advert_my_ads') }}">Back to My Ads</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
