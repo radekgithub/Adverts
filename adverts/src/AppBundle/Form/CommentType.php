@@ -20,9 +20,9 @@ class CommentType extends AbstractType
             ->add('text')
             ->add('date', DateType::class, array(
                 // renders it as a single text box
-                'widget' => 'single_text'))
+                'widget' => 'single_text'));
 //            ->add('advert')
-            ->add('user');
+//            ->add('user');
     }/**
      * {@inheritdoc}
      */

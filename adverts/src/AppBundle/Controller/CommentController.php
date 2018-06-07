@@ -41,7 +41,7 @@ class CommentController extends Controller
     public function newAction(Request $request, Advert $advert)
     {
         $comment = new Comment();
-        $advert->setUser($this->getUser());//get user id for new comment
+        $comment->setUser($this->getUser());//get user id for new comment
         $comment->setAdvert($advert);//get advert id for new comment
         $form = $this->createForm('AppBundle\Form\CommentType', $comment);
         $form->handleRequest($request);

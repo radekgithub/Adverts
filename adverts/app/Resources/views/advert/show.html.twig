@@ -4,7 +4,11 @@
 
     <h1>Advert</h1>
 
-    <table>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+        </tr>
+        </thead>
         <tbody>
             <tr>
                 <th>Id</th>
@@ -52,9 +56,14 @@
 
     <h3>Comments</h3>
     {% if advert.comments %}
+        <table class="table table-striped">
         {% for comment in advert.comments %}
-            <p>{{ comment.text }}</p>
+            <tr>
+                <td>{{ comment.date|date('Y-m-d') }}</td>
+                <td>{{ comment.text }}</td>
+            </tr>
         {% endfor %}
+        </table>
     {% endif %}
 
 {% endblock %}

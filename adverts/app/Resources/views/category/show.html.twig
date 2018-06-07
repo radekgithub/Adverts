@@ -4,7 +4,7 @@
 
     <h1>{{ category.name }}</h1>
 
-    <table>
+    <table class="table table-striped">
         <tbody>
         {% for advert in category.adverts %}
             {% if date(advert.expiryDate) > date() %}
