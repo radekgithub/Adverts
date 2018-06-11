@@ -2,11 +2,10 @@
 
 {% block body %}
 
-    <h1>My Ads</h1>
+    <h3>My Ads</h3>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Title</th>
             <th>Description</th>
             <th>Photo</th>
@@ -18,20 +17,13 @@
         {% for advert in adverts %}
             {% if app.user.id == advert.user.id %}
                 <tr>
-                    <td><a href="{{ path('advert_show', { 'id': advert.id }) }}">{{ advert.id }}</a></td>
                     <td>{{ advert.title }}</td>
                     <td>{{ advert.description }}</td>
                     <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
                     <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
                     <td>
-                        <ul>
-                            <li>
-                                <a href="{{ path('advert_show', { 'id': advert.id }) }}">show</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
-                            </li>
-                        </ul>
+                        <a href="{{ path('advert_show', { 'id': advert.id }) }}">Show</a><br />
+                        <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
                     </td>
                 </tr>
             {% endif %}

@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Category creation</h1>
+    <h3>Category creation</h3>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" class="btn btn-primary" value="Create" />
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="{{ path('category_index') }}">Back to Categories</a>
         </li>
     </ul>
 {% endblock %}

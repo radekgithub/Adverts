@@ -45,11 +45,13 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Advert", inversedBy="comments")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $advert;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 

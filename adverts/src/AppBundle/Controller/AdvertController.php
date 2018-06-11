@@ -133,7 +133,7 @@ class AdvertController extends Controller
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('advert_edit', array('id' => $advert->getId()));
+            return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
         }
 
         return $this->render('advert/edit.html.twig', array(
@@ -160,7 +160,7 @@ class AdvertController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('advert_index');
+        return $this->redirectToRoute('advert_my_ads');
     }
 
     /**

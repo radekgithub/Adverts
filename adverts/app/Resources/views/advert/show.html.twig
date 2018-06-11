@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <h1>Advert</h1>
+<div class="row">
+    <h3>Advert</h3>
 
     <table class="table table-striped">
         <thead>
@@ -10,10 +10,6 @@
         </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ advert.id }}</td>
-            </tr>
             <tr>
                 <th>Title</th>
                 <td>{{ advert.title }}</td>
@@ -24,30 +20,30 @@
             </tr>
             <tr>
                 <th>Photo</th>
-                <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
+                <td><img src="{{ asset('uploads/images/' ~ advert.photo) }}"></td>
             </tr>
             <tr>
-                <th>Expirydate</th>
+                <th>Expiry Date</th>
                 <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
             </tr>
         </tbody>
     </table>
 
-    <ul>
-        <li>
+    <ul class="list-group">
+        <li class="list-group-item">
             <a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a>
         </li>
-        <li>
+        <li class="list-group-item">
             <a href="{{ path('comment_new', {'advert' : advert.id}) }}">Add Comment</a>
         </li>
         {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
-        <li>
+        <li class="list-group-item">
             <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
         </li>
-        <li>
+        <li class="list-group-item">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" class="btn btn-primary" value="Delete">
             {{ form_end(delete_form) }}
         </li>
         {% endif %}
@@ -65,5 +61,5 @@
         {% endfor %}
         </table>
     {% endif %}
-
+</div>
 {% endblock %}

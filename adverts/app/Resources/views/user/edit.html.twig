@@ -1,17 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>User edit</h1>
+    <h3>Edit profile</h3>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+        <input type="submit" class="btn btn-primary" value="Save" />
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
+    <ul class="list-group">
+        <li class="list-group-item">
+            Delete profile
+        </li>
+        <li class="list-group-item">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" class="btn btn-primary" value="Delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>

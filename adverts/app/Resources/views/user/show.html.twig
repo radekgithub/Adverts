@@ -1,30 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>My Profile</h1>
+    <h3>My Profile</h3>
 
-    <table>
+    <table class="table table-striped">
         <tbody>
             <tr>
-                <th>Id</th>
                 <th>Username</th>
                 <th>Email</th>
             </tr>
             <tr>
-                <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
             </tr>
         </tbody>
     </table>
 
-    <ul>
-        <li>
+    <ul class="list-group">
+        <li class="list-group-item">
             <a href="{{ path('user_edit', { 'id': user.id }) }}">Edit</a>
         </li>
-        <li>
+        <li class="list-group-item">
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" class="btn btn-primary" value="Delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>

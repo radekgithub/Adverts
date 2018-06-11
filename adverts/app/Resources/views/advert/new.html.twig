@@ -2,15 +2,15 @@
 
 {% block body %}
 
-    <h1>Create New Ad</h1>
+    <h3>Create New Ad</h3>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" class="btn btn-primary" value="Create" />
     {{ form_end(form) }}
 
-    <ul>
-        <li>
+    <ul class="list-group">
+        <li class="list-group-item">
             <a href="{{ path('advert_my_ads') }}">Back to My Ads</a>
         </li>
     </ul>

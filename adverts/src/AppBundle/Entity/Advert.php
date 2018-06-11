@@ -59,6 +59,7 @@ class Advert
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="adverts")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
