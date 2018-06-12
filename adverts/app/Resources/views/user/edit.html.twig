@@ -2,6 +2,7 @@
 
 {% block body %}
     <h3>Edit profile</h3>
+    {% if user.id == app.user.id %}
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -18,4 +19,5 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    {% endif %}
 {% endblock %}

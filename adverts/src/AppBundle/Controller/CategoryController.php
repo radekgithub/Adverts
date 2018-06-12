@@ -82,6 +82,7 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('AppBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
@@ -107,6 +108,7 @@ class CategoryController extends Controller
      */
     public function deleteAction(Request $request, Category $category)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createDeleteForm($category);
         $form->handleRequest($request);
 

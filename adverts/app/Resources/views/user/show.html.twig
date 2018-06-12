@@ -2,7 +2,7 @@
 
 {% block body %}
     <h3>My Profile</h3>
-
+    {% if user.id == app.user.id %}
     <table class="table table-striped">
         <tbody>
             <tr>
@@ -26,4 +26,5 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    {% endif %}
 {% endblock %}

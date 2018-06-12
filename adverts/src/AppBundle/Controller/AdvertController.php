@@ -15,22 +15,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdvertController extends Controller
 {
-    /**
-     * Lists all advert entities.
-     *
-     * @Route("/", name="advert_index")
-     * @Method("GET")
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $adverts = $em->getRepository('AppBundle:Advert')->findAll();
-
-        return $this->render('advert/index.html.twig', array(
-            'adverts' => $adverts,
-        ));
-    }
+//    /**
+//     * Lists all advert entities.
+//     *
+//     * @Route("/", name="advert_index")
+//     * @Method("GET")
+//     */
+//    public function indexAction()
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $adverts = $em->getRepository('AppBundle:Advert')->findAll();
+//
+//        return $this->render('advert/index.html.twig', array(
+//            'adverts' => $adverts,
+//        ));
+//    }
 
     /**
      * Lists all advert entities.
@@ -40,6 +40,7 @@ class AdvertController extends Controller
      */
     public function myAdsAction()
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $em = $this->getDoctrine()->getManager();
 
         $adverts = $em->getRepository('AppBundle:Advert')->findAll();
@@ -57,6 +58,7 @@ class AdvertController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $advert = new Advert();
         $advert->setUser($this->getUser());//get logged user id for new advert
         $form = $this->createForm('AppBundle\Form\AdvertType', $advert);
@@ -117,6 +119,7 @@ class AdvertController extends Controller
      */
     public function editAction(Request $request, Advert $advert)
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $deleteForm = $this->createDeleteForm($advert);
         $editForm = $this->createForm('AppBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
@@ -151,6 +154,7 @@ class AdvertController extends Controller
      */
     public function deleteAction(Request $request, Advert $advert)
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $form = $this->createDeleteForm($advert);
         $form->handleRequest($request);
 

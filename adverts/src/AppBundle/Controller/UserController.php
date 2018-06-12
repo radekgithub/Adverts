@@ -22,6 +22,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('AppBundle:User')->findAll();
@@ -39,6 +40,7 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = new User();
         $form = $this->createForm('AppBundle\Form\UserType', $user);
         $form->handleRequest($request);
