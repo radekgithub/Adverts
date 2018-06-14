@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Advert controller.
@@ -159,6 +160,14 @@ class AdvertController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //get photo path and delete from web folder
+            $path = $this->get('kernel')->getRootDir() . '/../web/uploads/images/' . $advert->getPhoto();
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($advert);
             $em->flush();
