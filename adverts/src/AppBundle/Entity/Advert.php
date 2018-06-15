@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Advert
@@ -26,6 +27,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Length(min = 5, minMessage="Title should be at least 5 characters long")
      */
     private $title;
 
@@ -33,6 +35,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\Length(max = 600, maxMessage ="Description must be no longer than {{ limit }} characters long")
      */
     private $description;
 
@@ -40,6 +43,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+     * @Assert\Image(mimeTypesMessage="Uploaded file must be a valid photo")
      */
     private $photo;
 
@@ -65,6 +69,7 @@ class Advert
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="adverts")
+     * @Assert\NotNull()
      */
     private $category;
 
