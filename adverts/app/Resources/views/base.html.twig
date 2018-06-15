@@ -21,9 +21,9 @@
             </div>
             <ul class="nav navbar-nav">
             {% if is_granted("ROLE_USER") %}
-                {#<li>#}
-                    {#Hello {{ app.user.username }}#}
-                {#</li>#}
+                <p class="navbar-text">
+                    Logged in as {{ app.user.username }}
+                </p>
                 <li>
                     <a href="{{ path('fos_user_security_logout') }}">Logout</a>
                 </li>
