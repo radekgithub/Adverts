@@ -27,7 +27,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
-     * @Assert\Length(min = 5, minMessage="Category should be at least 5 characters long")
+     * @Assert\Length(min = 4, minMessage="Category should be at least 5 characters long")
      */
     private $name;
 

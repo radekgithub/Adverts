@@ -18,13 +18,15 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
-            ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => array('attr' => array('class' => 'password-field')),
-                'required' => true,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password')));
+            //password change is handled by FOSUserBundle in seperate form
+//            ->add('password', RepeatedType::class, array(
+//                'type' => PasswordType::class,
+//                'invalid_message' => 'The password fields must match.',
+//                'options' => array('attr' => array('class' => 'password-field')),
+//                'required' => true,
+//                'first_options'  => array('label' => 'Password'),
+//                'second_options' => array('label' => 'Repeat Password')))
+        ;
     }
 
     /**
