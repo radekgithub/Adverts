@@ -21,6 +21,7 @@ security:
 
             logout:       true
             anonymous:    true
+            switch_user: true
 
             access_denied_handler: AppBundle\Security\AccessDeniedHandler
 
