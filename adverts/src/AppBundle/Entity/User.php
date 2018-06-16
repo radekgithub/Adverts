@@ -53,7 +53,7 @@ class User extends BaseUser
     {
         return $this->avatar;
     }
-    
+
     /**
      * Set avatar
      *
