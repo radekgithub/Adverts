@@ -21,6 +21,12 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var string
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Advert", mappedBy="user")
      */
     private $adverts;
@@ -36,6 +42,30 @@ class User extends BaseUser
         // your own logic
         $this->adverts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+    }
+
+    /**
+     * Get avatar
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+    
+    /**
+     * Set avatar
+     *
+     * @param string $avatar
+     *
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
     }
 
     /**
