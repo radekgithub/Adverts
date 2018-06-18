@@ -112,6 +112,14 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //get profile photo path and delete from web folder
+            $path = $this->get('kernel')->getRootDir() . '/../web/uploads/images/' . $user->getAvatar();
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
