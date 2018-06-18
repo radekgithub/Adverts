@@ -33,6 +33,9 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+    AppBundle\Controller\ProfileController:
+        arguments:
+            $formFactory: '@fos_user.profile.form.factory'
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
