@@ -33,9 +33,6 @@
         <li class="list-group-item">
             <a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a>
         </li>
-        <li class="list-group-item">
-            <a href="{{ path('comment_new', {'advert' : advert.id}) }}">Add Comment</a>
-        </li>
         {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
         <li class="list-group-item">
@@ -66,6 +63,11 @@
         {% for comment in advert.comments %}
             <tr>
                 <td>{{ comment.date|date('Y-m-d') }}</td>
+                <td>
+                    {% if comment.userId == null %}anonymous
+                    {% else %}{{ comment.user }}
+                    {% endif %}
+                </td>
                 <td>{{ comment.text }}</td>
             </tr>
         {% endfor %}
