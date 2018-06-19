@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Controller\ProfileController as BaseController;
+use FOS\UserBundle\Controller\ProfileController as BaseController;use Imagick;
 
 /**
  * Controller managing the user profile.
@@ -89,6 +89,13 @@ class ProfileController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $file = $user->getAvatar();
+
+            $thumb = new \Imagick();
+            $thumb->readImage($file);
+            $thumb->resizeImage(100,100,Imagick::FILTER_LANCZOS,1);
+            $thumb->writeImage($file);
+            $thumb->clear();
+            $thumb->destroy();
 
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
 
