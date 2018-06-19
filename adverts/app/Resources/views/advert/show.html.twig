@@ -53,10 +53,10 @@
         <a href="#0" id="comment_wrap_toggle">Expand Author Details</a>
     </div>
     <div id="comment_bio_wrap" style="display: none;">
-        {#{{ form_start(form) }}#}
-        {#{{ form_widget(form) }}#}
-        {#<input type="submit" class="btn btn-primary" value="Add" />#}
-        {#{{ form_end(form) }}#}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-primary" value="Add" />
+        {{ form_end(form) }}
     </div>
     <h3>Comments</h3>
     {% if advert.comments %}
