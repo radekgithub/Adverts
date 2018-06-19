@@ -49,8 +49,8 @@
         {% endif %}
         {% endif %}
     </ul>
-    <div class="author_bio_toggle_wrapper">
-        <a href="#0" id="comment_wrap_toggle">Expand Author Details</a>
+    <div>
+        <a href="#0" id="comment_wrap_toggle">Add Comment</a>
     </div>
     <div id="comment_bio_wrap" style="display: none;">
         {{ form_start(form) }}
@@ -75,23 +75,19 @@
     <script>
     $(document).ready(function($)
     {
+        $("#comment_wrap_toggle").click(function()
+        {
+            $("#comment_bio_wrap").slideToggle(300);
 
-    $("#comment_wrap_toggle").click(function()
-    {
-
-    $("#comment_bio_wrap").slideToggle(300);
-
-    if ($("#comment_wrap_toggle").text() == "Expand Author Details")
-    {
-    $("#comment_wrap_toggle").html("Hide Author Details")
-    }
-    else
-    {
-    $("#comment_wrap_toggle").text("Expand Author Details")
-    }
-
-    });
-
+            if ($("#comment_wrap_toggle").text() == "Add Comment")
+            {
+                $("#comment_wrap_toggle").html("Hide")
+            }
+            else
+            {
+                $("#comment_wrap_toggle").text("Add Comment")
+            }
+        });
     });
     </script>
 {% endblock %}
