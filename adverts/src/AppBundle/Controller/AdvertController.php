@@ -3,12 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Advert;
+use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Advert controller.
  *
@@ -100,14 +100,27 @@ class AdvertController extends Controller
      * Finds and displays a advert entity.
      *
      * @Route("/{id}", name="advert_show")
-     * @Method("GET")
      */
-    public function showAction(Advert $advert)
+    public function showAction(Request $request, Advert $advert)
     {
+        $comment = new Comment();
+        $comment->setUser($this->getUser());//get user id for new comment
+        $comment->setAdvert($advert);//get advert id for new comment
+        $form = $this->createForm('AppBundle\Form\CommentType', $comment);
+        $form->handleRequest($request);
         $deleteForm = $this->createDeleteForm($advert);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
+        }
         return $this->render('advert/show.html.twig', array(
             'advert' => $advert,
+            'comment' => $comment,
+            'form' => $form->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
