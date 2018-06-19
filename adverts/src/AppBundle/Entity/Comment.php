@@ -34,7 +34,7 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="text", type="text")
-     * @Assert\Length(max = 10, maxMessage ="Description must be no longer than {{ limit }} characters long")
+     * @Assert\Length(max = 100, maxMessage ="Description must be no longer than {{ limit }} characters long")
      */
     private $text;
 
