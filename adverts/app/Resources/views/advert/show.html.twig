@@ -49,7 +49,15 @@
         {% endif %}
         {% endif %}
     </ul>
-
+    <div class="author_bio_toggle_wrapper">
+        <a href="#0" id="comment_wrap_toggle">Expand Author Details</a>
+    </div>
+    <div id="comment_bio_wrap" style="display: none;">
+        {#{{ form_start(form) }}#}
+        {#{{ form_widget(form) }}#}
+        {#<input type="submit" class="btn btn-primary" value="Add" />#}
+        {#{{ form_end(form) }}#}
+    </div>
     <h3>Comments</h3>
     {% if advert.comments %}
         <table class="table table-striped">
@@ -62,4 +70,28 @@
         </table>
     {% endif %}
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function($)
+    {
+
+    $("#comment_wrap_toggle").click(function()
+    {
+
+    $("#comment_bio_wrap").slideToggle(300);
+
+    if ($("#comment_wrap_toggle").text() == "Expand Author Details")
+    {
+    $("#comment_wrap_toggle").html("Hide Author Details")
+    }
+    else
+    {
+    $("#comment_wrap_toggle").text("Expand Author Details")
+    }
+
+    });
+
+    });
+    </script>
 {% endblock %}
