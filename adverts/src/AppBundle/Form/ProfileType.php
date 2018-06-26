@@ -11,9 +11,12 @@ class ProfileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('avatar', FileType::class, array(
+        $builder
+            ->add('avatar', FileType::class, array(
             'label' => 'Choose avatar photo',
-            'data_class' => null));
+            'data_class' => null))
+            ->add('phone')
+        ;
     }
 
     public function getParent()
