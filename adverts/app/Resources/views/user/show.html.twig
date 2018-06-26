@@ -9,11 +9,13 @@
                 <th>Profile photo</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Phone</th>
             </tr>
             <tr>
                 <td><img src="{{ asset('uploads/images/' ~ user.avatar) }}"></td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
             </tr>
         </tbody>
     </table>
