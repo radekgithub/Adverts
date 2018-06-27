@@ -26,6 +26,10 @@
                 <th>Expiry Date</th>
                 <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
             </tr>
+            <tr>
+                <th>Contact number</th>
+                <td>{{ advert.user.phone }}</td>
+            </tr>
         </tbody>
     </table>
 
