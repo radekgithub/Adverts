@@ -165,4 +165,12 @@ class User extends BaseUser
     {
         return $this->phone;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)', $this->getId(), $this->getUsername());
+    }
 }
