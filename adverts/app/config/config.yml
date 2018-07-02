@@ -83,3 +83,19 @@ fos_user:
     profile:
         form:
             type: AppBundle\Form\ProfileType
+
+easy_admin:
+    entities:
+        # change the following to the namespaces of your own entities
+        Category:
+            class: AppBundle\Entity\Category
+            list:
+                fields: ['name']
+        User:
+            class: AppBundle\Entity\User
+            list:
+                fields: ['username', 'email', 'enabled', 'lastLogin']
+            form:
+                fields: ['username', 'email', 'enabled', 'phone', 'adverts', 'comments']
+        Advert:
+            class: AppBundle\Entity\Advert
