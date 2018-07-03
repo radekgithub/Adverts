@@ -109,4 +109,12 @@ class Category
     {
         return $this->adverts;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)', $this->getId(), $this->getName());
+    }
 }
