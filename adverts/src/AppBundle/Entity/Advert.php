@@ -239,6 +239,16 @@ class Advert
     }
 
     /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)',
+            $this->getId(), $this->getTitle()
+        );
+    }
+
+    /**
      * Set category
      *
      * @param \AppBundle\Entity\Category $category
