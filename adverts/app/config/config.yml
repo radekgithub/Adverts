@@ -99,3 +99,6 @@ easy_admin:
                 fields: ['username', 'email', 'enabled', 'phone', 'adverts', 'comments']
         Advert:
             class: AppBundle\Entity\Advert
+
+vich_uploader:
+    db_driver: orm
