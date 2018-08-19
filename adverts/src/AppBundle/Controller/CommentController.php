@@ -38,9 +38,8 @@ class CommentController extends Controller
      * @Route("/new/{advert}", name="comment_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request, Advert $advert)
+    public function newAction(Request $request, Advert $advert, Comment $comment)
     {
-        $comment = new Comment();
         $comment->setUser($this->getUser());//get user id for new comment
         $comment->setAdvert($advert);//get advert id for new comment
         $form = $this->createForm('AppBundle\Form\CommentType', $comment);
