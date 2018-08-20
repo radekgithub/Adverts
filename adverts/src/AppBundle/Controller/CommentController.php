@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Advert;
 use AppBundle\Entity\Comment;
+use AppBundle\Service\NotificationMail;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,7 @@ class CommentController extends Controller
      * @Route("/new/{advert}", name="comment_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request, Advert $advert, Comment $comment)
+    public function newAction(Request $request, Advert $advert, Comment $comment, NotificationMail $notificationMail)
     {
         $comment->setUser($this->getUser());//get user id for new comment
         $comment->setAdvert($advert);//get advert id for new comment
@@ -49,6 +50,8 @@ class CommentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
+
+            $notificationMail->sendMail();
 
             return $this->redirectToRoute('comment_show', array('id' => $comment->getId()));
         }
