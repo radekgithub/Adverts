@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Advert;
 use AppBundle\Entity\Comment;
+use AppBundle\Service\NotificationMail;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -101,7 +102,7 @@ class AdvertController extends Controller
      *
      * @Route("/{id}", name="advert_show")
      */
-    public function showAction(Request $request, Advert $advert)
+    public function showAction(Request $request, Advert $advert, NotificationMail $notificationMail)
     {
         $comment = new Comment();
         $comment->setUser($this->getUser());//get user id for new comment
@@ -115,6 +116,8 @@ class AdvertController extends Controller
             $em->persist($comment);
             $em->flush();
 
+            $notificationMail->sendMail();
+            
             return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
         }
         return $this->render('advert/show.html.twig', array(
