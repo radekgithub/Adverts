@@ -12,12 +12,12 @@ class NotificationMail
         $this->mailer = $mailer;
     }
 
-    public function sendMail()
+    public function sendMail($email)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('New comment added')
             ->setFrom('classified@ads.com')
-            ->setTo('user@gmail.com')
+            ->setTo($email)
             ->setCharset('UTF-8')
             ->setContentType('text/html')
             ->setBody('You advert has received a comment');
