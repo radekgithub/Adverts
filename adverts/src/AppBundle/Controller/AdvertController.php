@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Advert controller.
  *
@@ -18,25 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdvertController extends Controller
 {
-//    /**
-//     * Lists all advert entities.
-//     *
-//     * @Route("/", name="advert_index")
-//     * @Method("GET")
-//     */
-//    public function indexAction()
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $adverts = $em->getRepository('AppBundle:Advert')->findAll();
-//
-//        return $this->render('advert/index.html.twig', array(
-//            'adverts' => $adverts,
-//        ));
-//    }
-
     /**
-     * Lists all advert entities.
+     * Lists user ads.
      *
      * @Route("/myads", name="advert_my_ads")
      * @Method("GET")
@@ -100,16 +83,22 @@ class AdvertController extends Controller
         $comment = new Comment();
         $comment->setUser($this->getUser());//get user id for new comment
         $comment->setAdvert($advert);//get advert id for new comment
+
+        //get advert author's email for notification mail
+        $advertAuthorsEmail = $advert->getUser()->getEmail();
+
         $form = $this->createForm('AppBundle\Form\CommentType', $comment);
         $form->handleRequest($request);
         $deleteForm = $this->createDeleteForm($advert);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
+
             $notificationMail = $this->container->get(NotificationMail::class);
-            $notificationMail->sendMail();
+            $notificationMail->sendMail($advertAuthorsEmail);
 
             return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
         }
