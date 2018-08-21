@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Advert;
 use AppBundle\Entity\Comment;
+use AppBundle\Service\FileNameGenerator;
 use AppBundle\Service\NotificationMail;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -70,7 +71,7 @@ class AdvertController extends Controller
 
             $file = $advert->getPhoto();
 
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileName = $this->container->get(FileNameGenerator::class)->generateUniqueFileName().'.'.$file->guessExtension();
 
             $file->move($this->getParameter('images_directory'), $fileName);
 
@@ -90,19 +91,11 @@ class AdvertController extends Controller
     }
 
     /**
-     * @return string
-     */
-    private function generateUniqueFileName()
-    {
-        return md5(uniqid());
-    }
-
-    /**
      * Finds and displays a advert entity.
      *
      * @Route("/{id}", name="advert_show")
      */
-    public function showAction(Request $request, Advert $advert, NotificationMail $notificationMail)
+    public function showAction(Request $request, Advert $advert)
     {
         $comment = new Comment();
         $comment->setUser($this->getUser());//get user id for new comment
@@ -115,9 +108,9 @@ class AdvertController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
-
+            $notificationMail = $this->container->get(NotificationMail::class);
             $notificationMail->sendMail();
-            
+
             return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
         }
         return $this->render('advert/show.html.twig', array(
