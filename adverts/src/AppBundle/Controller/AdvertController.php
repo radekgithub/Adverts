@@ -77,6 +77,7 @@ class AdvertController extends Controller
      * Finds and displays a advert entity.
      *
      * @Route("/{id}", name="advert_show")
+     * @Method("GET")
      */
     public function showAction(Request $request, Advert $advert)
     {
