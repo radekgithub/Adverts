@@ -43,14 +43,6 @@ class Advert
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
-     * @Assert\Image(mimeTypesMessage="Uploaded file must be a valid photo")
-     */
-    private $photo;
-
-    /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
      * @Vich\UploadableField(mapping="uploads", fileNameProperty="imageName", size="imageSize")
@@ -58,13 +50,6 @@ class Advert
      * @var File
      */
     private $imageFile;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @var string
-     */
-    private $imageName;
 
     /**
      * @var string
@@ -97,9 +82,16 @@ class Advert
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photo", mappedBy="advert", cascade={"persist"})
+     */
+    private $photos;
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
 
@@ -159,30 +151,6 @@ class Advert
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     *
-     * @return Advert
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
     }
 
     /**
@@ -353,5 +321,39 @@ class Advert
     public function __toString() : string
     {
         return sprintf('%s (%s)', $this->getId(), $this->getTitle());
+    }
+
+    /**
+     * Add photo
+     *
+     * @param \AppBundle\Entity\Photo $photo
+     *
+     * @return Advert
+     */
+    public function addPhoto(\AppBundle\Entity\Photo $photo = null)
+    {
+        $this->photos[] = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Remove photo
+     *
+     * @param \AppBundle\Entity\Photo $photo
+     */
+    public function removePhoto(\AppBundle\Entity\Photo $photo)
+    {
+        $this->photos->removeElement($photo);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
     }
 }
