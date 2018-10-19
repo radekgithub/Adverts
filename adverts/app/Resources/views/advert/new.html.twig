@@ -5,13 +5,25 @@
     <h3>Create New Ad</h3>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.expiryDate) }}
+        {{ form_row(form.category) }}
+        {# render each row and field in the embedded form, in this example it's rendering the experience (Exp) fiels as rows #}
+        <div class="col-sm-8 col-sm-offset-2" id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+            {% for row in form.photos %}
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <strong>{{ row.vars.value.name }}</strong>
+                    </div>
+                    <div class="panel-body">
+                        {{ form_row(row) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
         <input type="submit" class="btn btn-primary" value="Create" />
     {{ form_end(form) }}
 
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="{{ path('advert_my_ads') }}">Back to My Ads</a>
-        </li>
-    </ul>
 {% endblock %}
