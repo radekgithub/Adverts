@@ -10,26 +10,30 @@
 
     <p>{% if advert.expiryDate %}{% endif %}</p>
 
-
+    <div>
     {% for photo in advert.photos %}
-        <a class="fancybox" data-fancybox="gallery" href="{{ asset('uploads/images/' ~ photo.name) }}"><img src="{{ asset('uploads/images/' ~ photo.name) }}"></a>
+        <a class="fancybox img-thumbnail" data-fancybox="gallery" href="{{ asset('uploads/images/' ~ photo.name) }}">
+            <img src="{{ asset('uploads/images/' ~ photo.name) }}" width="150" height="150">
+        </a>
     {% endfor %}
+    </div>
 
-    <p><a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a></p>
     {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
-            <p>
-                <span style="float: left; margin-right: 5px;">
-                    <a class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
-                </span>
-                <span style="float: left;">
-                    {{ form_start(delete_form) }}
-                        <input type="submit" class="btn btn-danger" value="Delete">
-                    {{ form_end(delete_form) }}
-                </span>
-            </p>
+
+            <div style="float: left; margin-right: 5px;">
+                <a id="test_confirm" class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
+            </div>
+            <div>
+                {{ form_start(delete_form) }}
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                {{ form_end(delete_form) }}
+            </div>
+
         {% endif %}
     {% endif %}
+
+    <p><a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a></p>
 
     <h3>Comments</h3>
 
