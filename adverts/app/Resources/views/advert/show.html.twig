@@ -2,57 +2,40 @@
 
 {% block body %}
 <div class="row">
-    <h3>Advert</h3>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ advert.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ advert.description }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td><img src="{{ asset('uploads/images/' ~ advert.photo) }}"></td>
-            </tr>
-            <tr>
-                <th>Expiry Date</th>
-                <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Contact number</th>
-                <td>{{ advert.user.phone }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <h3>{{ advert.title }}</h3>
+    <p><i class="fa fa-hourglass"></i> {{ advert.expiryDate|date('d-m-Y') }}</p>
+    <p><i class="fa fa-phone"></i> {{ advert.user.phone }}</p>
+    <p>{{ advert.description }}</p>
 
-    <ul class="list-group">
-        <li class="list-group-item">
-            <a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a>
-        </li>
-        {% if is_granted("ROLE_USER") %}
+    <p>{% if advert.expiryDate %}{% endif %}</p>
+
+
+    {% for photo in advert.photos %}
+        <a class="fancybox" data-fancybox="gallery" href="{{ asset('uploads/images/' ~ photo.name) }}"><img src="{{ asset('uploads/images/' ~ photo.name) }}"></a>
+    {% endfor %}
+
+    <p><a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a></p>
+    {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
-        <li class="list-group-item">
-            <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
-        </li>
-        <li class="list-group-item">
-            {{ form_start(delete_form) }}
-                <input type="submit" class="btn btn-primary" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
+            <p>
+                <span style="float: left; margin-right: 5px;">
+                    <a class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
+                </span>
+                <span style="float: left;">
+                    {{ form_start(delete_form) }}
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                    {{ form_end(delete_form) }}
+                </span>
+            </p>
         {% endif %}
-        {% endif %}
-    </ul>
-    <div>
-        <a href="#0" id="comment_wrap_toggle">Add Comment</a>
-    </div>
+    {% endif %}
+
+    <h3>Comments</h3>
+
+    <p>
+        <a class="btn btn-default" href="#0" id="comment_wrap_toggle">Add Comment</a>
+    </p>
     <div id="comment_wrap" style="display: none;">
         {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -60,26 +43,29 @@
         {{ form_end(form) }}
     </div>
 
-    <div>
-    <h3>Comments</h3>
     {% if advert.comments %}
-        <table class="table table-striped">
         {% for comment in advert.comments %}
-            <tr>
-                <td>{{ comment.date|date('Y-m-d') }}</td>
-                <td>
-                    {% if comment.userId == null %}anonymous
-                    {% else %}{{ comment.user }}
+            <div class="well">
+                <p><strong>{{ comment.date|date('Y-m-d') }} by
+                    {% if comment.userId == null %}
+                        anonymous
+                    {% else %}
+                        {{ comment.user }}
                     {% endif %}
-                </td>
-                <td>{{ comment.text }}</td>
-            </tr>
+                    </strong></p>
+                <p>{{ comment.text }}</p>
+            </div>
         {% endfor %}
-        </table>
     {% endif %}
-    </div>
+
 </div>
 {% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('assets/js/new_comment.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".fancybox").fancybox();
+        });
+    </script>
 {% endblock %}
