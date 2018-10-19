@@ -3,22 +3,28 @@
 {% block body %}
     <h3>Edit Advert</h3>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" class="btn btn-primary" value="Save" />
-    {{ form_end(edit_form) }}
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.expiryDate) }}
+    {{ form_row(form.category) }}
 
-    <ul class="list-group">
-        <li class="list-group-item">
-            Delete Ad
-        </li>
-        <li class="list-group-item">
-            {{ form_start(delete_form) }}
-                <input type="submit" class="btn btn-primary" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-        <li class="list-group-item">
-            <a href="{{ path('advert_my_ads') }}">Back to My Ads</a>
-        </li>
-    </ul>
+    <div class="col-sm-8 col-sm-offset-2" id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+        {% for row in form.photos %}
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <img src="{{ asset('uploads/images/' ~ row.vars.value.name) }}">
+                </div>
+                <div class="panel-body" style="display: none"><!-- hide file selection button -->
+                    {{ form_row(row) }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {{ form_end(form) }}
+
+    <div>
+        <a class="btn btn-warning" href="{{ path('advert_show', { 'id': advert.id }) }}">Cancel</a>
+        <input type="submit" class="btn btn-primary" value="Save" />
+    </div>
 {% endblock %}
