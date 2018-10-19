@@ -3,32 +3,19 @@
 {% block body %}
 
     <h3>My Ads</h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Photo</th>
-            <th>Expirydate</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for advert in adverts %}
-            {% if app.user.id == advert.user.id %}
-                <tr>
-                    <td>{{ advert.title }}</td>
-                    <td>{{ advert.description }}</td>
-                    <td><a href="{{ asset('uploads/images/' ~ advert.photo) }}">View photo</a></td>
-                    <td>{% if advert.expiryDate %}{{ advert.expiryDate|date('Y-m-d') }}{% endif %}</td>
-                    <td>
-                        <a href="{{ path('advert_show', { 'id': advert.id }) }}">Show</a><br />
-                        <a href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
-                    </td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
+
+    {% for advert in adverts %}
+        {% if app.user.id == advert.user.id %}
+            <div class="well">
+                <p><strong>{{ advert.title }}</strong></p>
+                <p><i class="fa fa-hourglass"></i> {{ advert.expiryDate|date('d-m-Y') }}</p>
+                <p>{{ advert.description }}</p>
+                <p>
+                    <a class="btn btn-success" href="{{ path('advert_show', { 'id': advert.id }) }}">Show</a>
+                    <a class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
+                </p>
+            </div>
+        {% endif %}
+    {% endfor %}
 
 {% endblock %}
