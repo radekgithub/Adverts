@@ -21,18 +21,33 @@
     {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
             <div class="top">
-                <div style="float: left; margin-right: 5px;">
+                <div>
                     <a id="test_confirm" class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">
                         <i class="fa fa-pencil"></i> Edit
                     </a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i> Delete</a>
                 </div>
-                <div>
-                    {{ form_start(delete_form) }}
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-                    {{ form_end(delete_form) }}
+
+                {#Delete confirmation modal#}
+                <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <strong>Delete advert</strong>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure about this?
+                            </div>
+                            <div class="modal-footer">
+                                {{ form_start(delete_form) }}
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                <button type="submit" class="btn btn-danger btn-ok"><i class="fa fa-trash"></i> Delete</button>
+                                {{ form_end(delete_form) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         {% endif %}
     {% endif %}
 
@@ -73,6 +88,10 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $(".fancybox").fancybox();
+        });
+
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
         });
     </script>
 {% endblock %}
