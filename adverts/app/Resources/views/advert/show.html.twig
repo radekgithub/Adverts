@@ -4,7 +4,7 @@
 <div class="row">
 
     <h3>{{ advert.title }}</h3>
-    <p><i class="fa fa-hourglass"></i> {{ advert.expiryDate|date('d-m-Y') }}</p>
+    <p><i class="fa fa-hourglass-end"></i> {{ advert.expiryDate|date('d-m-Y') }}</p>
     <p><i class="fa fa-phone"></i> {{ advert.user.phone }}</p>
     <p>{{ advert.description }}</p>
 
@@ -20,25 +20,28 @@
 
     {% if is_granted("ROLE_USER") %}
         {% if app.user.id == advert.user.id %}
-
-            <div style="float: left; margin-right: 5px;">
-                <a id="test_confirm" class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">Edit</a>
-            </div>
-            <div>
-                {{ form_start(delete_form) }}
-                    <input type="submit" class="btn btn-danger" value="Delete">
-                {{ form_end(delete_form) }}
+            <div class="top">
+                <div style="float: left; margin-right: 5px;">
+                    <a id="test_confirm" class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">
+                        <i class="fa fa-pencil"></i> Edit
+                    </a>
+                </div>
+                <div>
+                    {{ form_start(delete_form) }}
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+                    {{ form_end(delete_form) }}
+                </div>
             </div>
 
         {% endif %}
     {% endif %}
 
-    <p><a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a></p>
+    <div class="top"><a href="{{ path('category_show', {'id': advert.category.id}) }}">Back to {{ advert.category.name }}</a></div>
 
     <h3>Comments</h3>
 
     <p>
-        <a class="btn btn-default" href="#0" id="comment_wrap_toggle">Add Comment</a>
+        <a class="btn btn-info" href="#0" id="comment_wrap_toggle"><span id="comment"></span><span id="span">Add Comment</span></a>
     </p>
     <div id="comment_wrap" style="display: none;">
         {{ form_start(form) }}
