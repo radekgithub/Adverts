@@ -10,20 +10,25 @@
         {{ form_row(form.description) }}
         {{ form_row(form.expiryDate) }}
         {{ form_row(form.category) }}
-        {# render each row and field in the embedded form, in this example it's rendering the experience (Exp) fiels as rows #}
-        <div class="col-sm-8 col-sm-offset-2" id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+        {# render each row and field in the embedded form, in this example it's rendering the photo fiels as rows #}
+        <div id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
             {% for row in form.photos %}
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
+                <div class="well">
+                    <span class="image-wrapper">
                         <strong>{{ row.vars.value.name }}</strong>
-                    </div>
-                    <div class="panel-body">
+                    </span>
+                    <span class="defaultUploadBtn">
                         {{ form_row(row) }}
-                    </div>
+                    </span>
                 </div>
             {% endfor %}
         </div>
-        <input type="submit" class="btn btn-primary" value="Create" />
+        <div class="top">
+            <a class="btn btn-warning" href="{{ path('advert_my_ads') }}">
+                <i class="fa fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+        </div>
     {{ form_end(form) }}
 
 {% endblock %}
