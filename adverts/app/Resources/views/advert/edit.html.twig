@@ -9,22 +9,24 @@
     {{ form_row(form.expiryDate) }}
     {{ form_row(form.category) }}
 
-    <div class="col-sm-8 col-sm-offset-2" id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
+    <div id="photo_list" data-prototype="{{ form_widget(form.photos.vars.prototype)|e('html_attr') }}">
         {% for row in form.photos %}
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <img src="{{ asset('uploads/images/' ~ row.vars.value.name) }}">
-                </div>
-                <div class="panel-body" style="display: none"><!-- hide file selection button -->
+            <div class="well">
+                <span class="image-wrapper">
+                    <img class="fancybox img-thumbnail" src="{{ asset('uploads/images/' ~ row.vars.value.name) }}" width="150" height="150">
+                </span>
+                <span class="default-button" style="display: none"><!-- hide html default file selection button -->
                     {{ form_row(row) }}
-                </div>
+                </span>
             </div>
         {% endfor %}
     </div>
+    <div class="top">
+        <a class="btn btn-warning" href="{{ path('advert_show', { 'id': advert.id }) }}">
+            <i class="fa fa-times"></i> Cancel
+        </a>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+    </div>
     {{ form_end(form) }}
 
-    <div>
-        <a class="btn btn-warning" href="{{ path('advert_show', { 'id': advert.id }) }}">Cancel</a>
-        <input type="submit" class="btn btn-primary" value="Save" />
-    </div>
 {% endblock %}
