@@ -72,7 +72,7 @@
                     {% if comment.userId == null %}
                         anonymous
                     {% else %}
-                        {{ comment.user }}
+                        {{ comment.user.username }}
                     {% endif %}
                     </strong></p>
                 <p>{{ comment.text }}</p>
