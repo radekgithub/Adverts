@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Advert;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Photo;
 use AppBundle\Service\FileNameGenerator;
 use AppBundle\Service\NotificationMail;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -52,13 +54,32 @@ class AdvertController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $file = $advert->getPhoto();
+            $files = $request->files->get('appbundle_advert')['photos'];
 
-            $fileName = $this->container->get(FileNameGenerator::class)->generateUniqueFileName().'.'.$file->guessExtension();
+            if ($files !== null) {
 
-            $file->move($this->getParameter('images_directory'), $fileName);
+                foreach ($files as $file) {
 
-            $advert->setPhoto($fileName);
+                    if ($file['name'] !== null) {
+
+                        // $file is an array with just one element under key 'name', hence $file['name']
+                        $fileName = $this->container->get(FileNameGenerator::class)->generateUniqueFileName() . '.' . $file['name']->guessExtension();
+
+                        $file['name']->move($this->getParameter('images_directory'), $fileName);
+
+                        $photo = new Photo();
+                        $photo->setName($fileName);
+                        $photo->setAdvert($advert);
+                        $advert->addPhoto($photo);
+                    }
+                }
+            }
+
+            foreach ($advert->getPhotos() as $p) {
+                if (null === $p->getName()) {
+                    $advert->removePhoto($p);
+                }
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($advert);
@@ -77,7 +98,7 @@ class AdvertController extends Controller
      * Finds and displays a advert entity.
      *
      * @Route("/{id}", name="advert_show")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function showAction(Request $request, Advert $advert)
     {
@@ -121,27 +142,71 @@ class AdvertController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         $deleteForm = $this->createDeleteForm($advert);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $advert = $em->getRepository('AppBundle:Advert')->findOneBy(['id' => $advert->getId()]);
+
+        $originalPhoto = new ArrayCollection();
+        foreach ($advert->getPhotos() as $photo) {
+            $originalPhoto->add($photo);
+        }
+
         $editForm = $this->createForm('AppBundle\Form\AdvertType', $advert);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
-            $file = $advert->getPhoto();
+            foreach ($originalPhoto as $photo) {
 
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+                if ($advert->getPhotos()->contains($photo) === false) {
+                    //get photo path and delete from web folder
+                    $path = $this->get('kernel')->getRootDir() . '/../web/uploads/images/' . $photo->getName();
 
-            $file->move($this->getParameter('images_directory'), $fileName);
+                    if (file_exists($path)) {
+                        unlink($path);
+                    }
 
-            $advert->setPhoto($fileName);
+                    // delete photo from database
+                    $em->remove($photo);
+                }
+            }
 
-            $this->getDoctrine()->getManager()->flush();
+            $files = $request->files->get('appbundle_advert')['photos'];
+
+            if ($files !== null) {
+
+                foreach ($files as $file) {
+
+                    if ($file['name'] !== null) {
+                        // $file is an array with one element under key 'name', hence $file['name']
+                        $fileName = $this->container->get(FileNameGenerator::class)->generateUniqueFileName() . '.' . $file['name']->guessExtension();
+
+                        $file['name']->move($this->getParameter('images_directory'), $fileName);
+
+                        $photo = new Photo();
+                        $photo->setName($fileName);
+                        $photo->setAdvert($advert);
+                        $advert->addPhoto($photo);
+                    }
+                }
+            }
+
+            foreach ($advert->getPhotos() as $p) {
+                if (null === $p->getName()) {
+                    $advert->removePhoto($p);
+                }
+            }
+
+            $em->persist($advert);
+            $em->flush();
 
             return $this->redirectToRoute('advert_show', array('id' => $advert->getId()));
         }
 
         return $this->render('advert/edit.html.twig', array(
             'advert' => $advert,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -160,11 +225,13 @@ class AdvertController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //get photo path and delete from web folder
-            $path = $this->get('kernel')->getRootDir() . '/../web/uploads/images/' . $advert->getPhoto();
+            foreach ($advert->getPhotos() as $photo) {
+                //get photo path and delete from web folder
+                $path = $this->get('kernel')->getRootDir() . '/../web/uploads/images/' . $photo->getName();
 
-            if (file_exists($path)) {
-                unlink($path);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
             }
 
             $em = $this->getDoctrine()->getManager();
