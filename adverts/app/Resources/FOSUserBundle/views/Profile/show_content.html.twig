@@ -4,11 +4,70 @@
 
     {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="fos_user_user_show">
-    <p><img src="{{ asset('uploads/images/' ~ user.avatar) }}"></p>
-    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
-    <p>Phone: {{ user.phone }}</p>
+<div>
+    <div class="fos_user_user_show">
+        <div>
+            {% if user.avatar %}
+                <img src="{{ asset('uploads/images/' ~ user.avatar) }}">
+            {% else %}
+                <img src="{{ asset('uploads/images/avatar.jpeg') }}">
+            {% endif %}
+        </div>
+        <div class="top">
+            <span class="fa-stack fa-3x">
+                <i class="fa fa-circle fa-stack-2x icon-background"></i>
+                <i class="fa fa-user fa-stack-1x"></i>
+            </span>
+        </div>
+        <div>{{ user.username }}</div>
+        <div class="top">
+            <span class="fa-stack fa-3x">
+                <i class="fa fa-circle fa-stack-2x icon-background"></i>
+                <i class="fa fa-envelope fa-stack-1x"></i>
+            </span>
+        </div>
+        <div>{{ user.email }}</div>
+        <div class="top">
+            <span class="fa-stack fa-3x">
+                <i class="fa fa-circle fa-stack-2x icon-background"></i>
+                <i class="fa fa-phone fa-stack-1x"></i>
+            </span>
+        </div>
+        <div>{{ user.phone }}</div>
+    </div>
+    <div class="top">
+        <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-warning">
+            <i class="fa fa-pencil"></i> Edit Profile
+        </a>
+        <a class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete"><i class="fa fa-trash"></i> Delete</a>
+    </div>
 </div>
-    <a href="{{ path('fos_user_profile_edit') }}">Edit Profile</a>
+    {#Delete confirmation modal#}
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong>Delete account</strong>
+                </div>
+                <div class="modal-body">
+                    Are you sure about this?
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ path('user_delete', {'id':user.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                        <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/new_comment.js') }}"></script>
+    <script type="text/javascript">
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+    </script>
 {% endblock %}
