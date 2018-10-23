@@ -3,10 +3,17 @@
 
 {% block body %}
 
-{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" class="btn btn-primary" value="{{ 'profile.edit.submit'|trans }}" />
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'form-advert' } }) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.avatar) }}
+    {{ form_row(form.current_password) }}
+
+    <div class="top">
+        <a class="btn btn-warning" href="{{ path('fos_user_profile_show') }}">
+            <i class="fa fa-times"></i> Cancel
+        </a>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
     </div>
 {{ form_end(form) }}
 
