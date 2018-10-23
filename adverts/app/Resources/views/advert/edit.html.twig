@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+<div>
     <h3>Edit Advert</h3>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': { 'class': 'form-advert' } }) }}
     {{ form_row(form.title) }}
     {{ form_row(form.description) }}
     {{ form_row(form.expiryDate) }}
@@ -28,5 +30,6 @@
         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
     </div>
     {{ form_end(form) }}
+</div>
 
 {% endblock %}
