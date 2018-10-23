@@ -7,17 +7,19 @@
     {% for advert in adverts %}
         {% if app.user.id == advert.user.id %}
             <div class="well">
-                <p><strong>{{ advert.title }}</strong></p>
-                <p><i class="fa fa-hourglass-end"></i> {{ advert.expiryDate|date('d-m-Y') }}</p>
-                <p>{{ advert.description|length > 30 ? advert.description|slice(0, 30) ~ '...' : advert.description }}</p>
-                <p>
-                    <a class="btn btn-success" href="{{ path('advert_show', { 'id': advert.id }) }}">
-                        <i class="fa fa-eye"></i> Show
-                    </a>
-                    <a class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">
-                        <i class="fa fa-edit"></i> Edit
-                    </a>
-                </p>
+                <div class="row">
+                    <div class="col-sm-3"><strong>{{ advert.title }}</strong></div>
+                    <div class="col-sm-3"><i class="fa fa-hourglass-end"></i> {{ advert.expiryDate|date('d-m-Y') }}</div>
+                    <div class="col-sm-3">{{ advert.description|length > 30 ? advert.description|slice(0, 30) ~ '...' : advert.description }}</div>
+                    <div class="col-sm-3">
+                        <a class="btn btn-success" href="{{ path('advert_show', { 'id': advert.id }) }}">
+                            <i class="fa fa-eye"></i> Show
+                        </a>
+                        <a class="btn btn-warning" href="{{ path('advert_edit', { 'id': advert.id }) }}">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                    </div>
+                </div>
             </div>
         {% endif %}
     {% endfor %}
