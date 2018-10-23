@@ -20,7 +20,10 @@ class PhotoType extends AbstractType
                 'label' => 'Choose photo file',
                 'data_class' => null,
                 'mapped'=> false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'accept' => 'image/*',
+                ]
             ));
     }
 
