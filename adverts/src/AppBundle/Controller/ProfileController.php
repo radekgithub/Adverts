@@ -90,18 +90,20 @@ class ProfileController extends BaseController
 
             $file = $user->getAvatar();
 
-            $thumb = new \Imagick();
-            $thumb->readImage($file);
-            $thumb->resizeImage(100,100,Imagick::FILTER_LANCZOS,1);
-            $thumb->writeImage($file);
-            $thumb->clear();
-            $thumb->destroy();
+            if ($file !== null) {
+                $thumb = new \Imagick();
+                $thumb->readImage($file);
+                $thumb->resizeImage(100, 100, Imagick::FILTER_LANCZOS, 1);
+                $thumb->writeImage($file);
+                $thumb->clear();
+                $thumb->destroy();
 
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+                $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
 
-            $file->move($this->getParameter('images_directory'), $fileName);
+                $file->move($this->getParameter('images_directory'), $fileName);
 
-            $user->setAvatar($fileName);
+                $user->setAvatar($fileName);
+            }
 
             $event = new FormEvent($form, $request);
             $this->eventDispatcher->dispatch(FOSUserEvents::PROFILE_EDIT_SUCCESS, $event);
