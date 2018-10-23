@@ -14,8 +14,11 @@ class ProfileType extends AbstractType
         $builder
             ->add('avatar', FileType::class, array(
             'label' => 'Choose avatar photo',
+            'required' => false,
             'data_class' => null))
             ->add('phone')
+            // changing username is not allowed, so remove the field
+            ->remove('username')
         ;
     }
 
