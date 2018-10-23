@@ -64,12 +64,23 @@ class CategoryController extends Controller
      * @Route("/{id}", name="category_show")
      * @Method("GET")
      */
-    public function showAction(Category $category)
+    public function showAction(Request $request, Category $category)
     {
         $deleteForm = $this->createDeleteForm($category);
 
+        /**
+         * @var $paginator \Knp\Component\Pager\Paginator
+         */
+        $paginator = $this->get('knp_paginator');
+        $categoryAdverts = $paginator->paginate(
+            $category->getAdverts(),
+            $request->query->getInt('page', 1)/*page number*/,
+            $request->query->getInt('limit', 10)/*limit per page*/
+        );
+
         return $this->render('category/show.html.twig', array(
             'category' => $category,
+            'adverts' => $categoryAdverts,
             'delete_form' => $deleteForm->createView(),
         ));
     }
