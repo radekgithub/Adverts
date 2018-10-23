@@ -43,22 +43,6 @@ class Advert
     private $description;
 
     /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
-     * @Vich\UploadableField(mapping="uploads", fileNameProperty="imageName", size="imageSize")
-     *
-     * @var File
-     */
-    private $imageFile;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="photo_old_name", type="string", length=255, nullable=true)
-     */
-    private $photoOldName;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="expiry_date", type="datetime")
@@ -83,7 +67,7 @@ class Advert
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photo", mappedBy="advert", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photo", mappedBy="advert", cascade={"persist"}, orphanRemoval=true)
      */
     private $photos;
 
@@ -154,30 +138,6 @@ class Advert
     }
 
     /**
-     * Set photoOldName
-     *
-     * @param string $photoOldName
-     *
-     * @return Advert
-     */
-    public function setPhotoOldName($photoOldName)
-    {
-        $this->photoOldName = $photoOldName;
-
-        return $this;
-    }
-
-    /**
-     * Get photoOldName
-     *
-     * @return string
-     */
-    public function getPhotoOldName()
-    {
-        return $this->photoOldName;
-    }
-
-    /**
      * Set expiryDate
      *
      * @param \DateTime $expiryDate
@@ -199,38 +159,6 @@ class Advert
     public function getExpiryDate()
     {
         return $this->expiryDate;
-    }
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
-     */
-    public function setImageFile(File $image = null)
-    {
-        $this->imageFile = $image;
-    }
-
-    /**
-     * @return File
-     */
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * @param string $imageName
-     */
-    public function setImageName($imageName)
-    {
-        $this->imageName = $imageName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImageName()
-    {
-        return $this->imageName;
     }
 
     /**
@@ -330,8 +258,10 @@ class Advert
      *
      * @return Advert
      */
-    public function addPhoto(\AppBundle\Entity\Photo $photo = null)
+    public function addPhoto(\AppBundle\Entity\Photo $photo)
     {
+        $photo->setAdvert($this);
+
         $this->photos[] = $photo;
 
         return $this;
