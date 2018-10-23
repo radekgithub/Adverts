@@ -6,7 +6,7 @@
 {{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'form-advert' } }) }}
     {{ form_row(form.email) }}
     {{ form_row(form.phone) }}
-    {{ form_row(form.avatar) }}
+    {{ form_row(form.avatar, {'attr': {'accept': 'image/*'}}) }}
     {{ form_row(form.current_password) }}
 
     <div class="top">
