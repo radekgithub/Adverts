@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -18,13 +19,20 @@ class AdvertType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('photo', FileType::class, array(
-                'label' => 'Choose photo file',
-                'data_class' => null))
+            ->add('photos', CollectionType::class, array(
+                'entry_type' => PhotoType::class,
+                'entry_options' => array(
+                    'label' => false,
+                ),
+                'by_reference' => false,
+                // this allows the creation of new forms and the prototype too
+                'allow_add' => true,
+                // this one allows the form to be removed
+                'allow_delete' => true
+            ))
             ->add('expiryDate', DateType::class, array(
                 // renders it as a single text box
                 'widget' => 'single_text'))
-//            ->add('user')//logged user is fetched and passed in controller
             ->add('category', null, ['choice_label' => 'name']);
     }
 
