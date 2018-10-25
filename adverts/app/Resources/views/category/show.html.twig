@@ -4,23 +4,27 @@
 
     <h3>{{ category.name }}</h3>
 
-    <table class="table table-striped">
-        <tbody>
-        {% for advert in adverts %}
-            {% if date(advert.expiryDate) > date() %}
-                <tr>
-                    <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
-                </tr>
-            {% else %}
-                {% if is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and advert.user.id == app.user.id)%}
+    {% if adverts|length == 0 %}
+        <p>No adverts in this category</p>
+    {% else %}
+        <table class="table table-striped">
+            <tbody>
+            {% for advert in adverts %}
+                {% if date(advert.expiryDate) > date() %}
                     <tr>
                         <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
                     </tr>
+                {% else %}
+                    {% if is_granted("ROLE_ADMIN") or (is_granted("ROLE_USER") and advert.user.id == app.user.id)%}
+                        <tr>
+                            <td><a href="{{ path('advert_show', {'id': advert.id}) }}">{{ advert.title }}</a></td>
+                        </tr>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
     {# display navigation #}
     <div class="navigation">
