@@ -1,7 +1,7 @@
 AppBundle\Entity\Advert:
-    advert_{1..100}:
-        title: '<text(20)'
+    advert_{1..20}:
+        title: '<randomElement($array = ["Audi","Fiat","Mustang","Ford","Dodge","Volvo","Skoda","Jeep","Toyota"])>'
         description: '<text(200)>'
-        expiryDate: '<dateTimeBetween("+30 days", "+40 days")>'
+        expiryDate: '<dateTimeBetween("+90 days", "+1 years")>'
         user: '<numberBetween(1, 20)>'
-        category: '<numberBetween(1, 15)>'
+        category: '2'

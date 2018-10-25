@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -26,6 +27,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\Length(min = 4, minMessage="Category should be at least 5 characters long")
      */
     private $name;
 
@@ -106,5 +108,13 @@ class Category
     public function getAdverts()
     {
         return $this->adverts;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)', $this->getId(), $this->getName());
     }
 }

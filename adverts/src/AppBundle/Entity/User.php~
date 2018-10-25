@@ -141,4 +141,36 @@ class User extends BaseUser
     {
         return $this->comments;
     }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)', $this->getId(), $this->getUsername());
+    }
 }

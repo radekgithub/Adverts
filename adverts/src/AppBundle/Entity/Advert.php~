@@ -4,12 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Advert
  *
  * @ORM\Table(name="advert")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdvertRepository")
+ * @Vich\Uploadable
  */
 class Advert
 {
@@ -26,6 +30,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Length(min = 5, minMessage="Title should be at least 5 characters long")
      */
     private $title;
 
@@ -33,6 +38,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\Length(max = 600, maxMessage ="Description must be no longer than {{ limit }} characters long")
      */
     private $description;
 
@@ -40,8 +46,25 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+     * @Assert\Image(mimeTypesMessage="Uploaded file must be a valid photo")
      */
     private $photo;
+
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     *
+     * @Vich\UploadableField(mapping="uploads", fileNameProperty="imageName", size="imageSize")
+     *
+     * @var File
+     */
+    private $imageFile;
+
+//    /**
+//     * @ORM\Column(type="string", length=255)
+//     *
+//     * @var string
+//     */
+//    private $imageName;
 
     /**
      * @var string
@@ -59,11 +82,13 @@ class Advert
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="adverts")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="adverts")
+     * @Assert\NotNull()
      */
     private $category;
 
@@ -72,9 +97,16 @@ class Advert
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Photo", mappedBy="advert")
+     */
+    private $photos;
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
 
@@ -209,6 +241,38 @@ class Advert
     }
 
     /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param string $imageName
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+    /**
      * Set user
      *
      * @param \AppBundle\Entity\User $user
@@ -288,5 +352,13 @@ class Advert
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return sprintf('%s (%s)', $this->getId(), $this->getTitle());
     }
 }

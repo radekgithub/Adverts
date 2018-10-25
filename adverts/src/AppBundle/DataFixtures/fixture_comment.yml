@@ -1,5 +1,5 @@
 AppBundle\Entity\Comment:
-    comment_{1..200}:
+    comment_{1..100}:
         text: '<text(150)>'
-        user: '<numberBetween(1, 20)>'
-        advert: '<numberBetween(1, 100)>'
+        user: '<numberBetween(34, 54)>'
+        advert: '<numberBetween(55, 100)>'

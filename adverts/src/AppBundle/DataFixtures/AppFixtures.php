@@ -13,6 +13,8 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+//        for ($i = 1; $i < 20; $i++) {
             $objects = Fixtures::load(__DIR__ . '/fixture_advert.yml', $manager);
+//        }
     }
 }
